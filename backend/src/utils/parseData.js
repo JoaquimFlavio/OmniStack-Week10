@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Dev = require('../models/Dev');
 const parseStringAsArray = require('./parseStringAsArray');
+const {findConnections} = require('../websocket');
 
 module.exports = async function parseData (data) {
     const { github_username, techs, latitude, longitude } = data;
