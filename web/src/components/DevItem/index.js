@@ -16,9 +16,9 @@ function DevItem({ dev, del }) {
                     <span>{dev.techs.join(', ')}</span>
                 </div>
             </header>
-            <body>
-                <p>{dev.bio}</p>
-            </body>
+            
+            <p>{dev.bio}</p>
+            
             <pady> 
                 <a href={`https://github.com/${dev.github_username}`}>Acessar perfil no GitHub</a>
                 <tools>

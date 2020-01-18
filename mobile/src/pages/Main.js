@@ -8,21 +8,25 @@ import api from '../services/api';
 import {connect, disconnect, subscribeToNewDevs} from '../services/socket';
 
 function Main({ navigation }){
+    //Criação dos estados que serão utilizados na Aplicação,
     const [devs, setDevs] = useState([]);
-    const [currentRegion, setCurrentRegion] = useState(null);
     const [techs, setTechs] = useState('');
-
+    const [currentRegion, setCurrentRegion] = useState(null);
+    
     useEffect(() => {
         async function loadInitialPosition(){
+            //Solicita autorização do usuario para utilizar o GPS.
             const { granted } = await requestPermissionsAsync();
 
             if(granted){
+                //Obtem as coordenadas do GPS.
                 const {coords} = await getCurrentPositionAsync({
-                    enableHighAccuracy: true,
+                    enableHighAccuracy: true,//Modo de auta precisão
                 });
 
                 const { latitude, longitude } = coords;
-
+                
+                //Atualiza o estado da regiao.
                 setCurrentRegion({
                     latitude,
                     longitude,
@@ -33,17 +37,25 @@ function Main({ navigation }){
         }
 
         loadInitialPosition();
-    }, []);
+    }, []);//Realizada apenas uma unica vez.
 
     useEffect(() => {
+        /*
+         * Envia a função responsavel por atualizar o estados dos devs,
+         * de modo que sempre que o servidor enviar uma mensagem o estado
+         * será atualizado, recebendo o novo usuario, e então essa função 
+         * voltará a ser chamada.
+         */ 
         subscribeToNewDevs(dev => setDevs([...devs, dev]));
-    }, [devs])
+    }, [devs]);//Realiza sempre que devs for alterado.
 
     function setupWebsocket(){
+        //Encerra possiveis conexões anteriores
         disconnect();
 
         const {latitude, longitude} = currentRegion;
 
+        //Se conecta ao servidor e então envia sua localização e tecnologias desejadas.
         connect(
             latitude,
             longitude,
@@ -54,6 +66,11 @@ function Main({ navigation }){
     async function loadDevs() {
         const { latitude, longitude } = currentRegion;
 
+        /*
+         * Realiza uma primeira chamada a API para obter todos os devs num raio de 10km
+         * que utilizem as tecnologias desejadas.abs
+         * Depois os novos Devs serão adicionados em tempo real atraves do WebSockets.
+         */
         const response = await api.get('/search', {
             params: {
                 latitude,
@@ -62,16 +79,16 @@ function Main({ navigation }){
             }
         });
 
-        setDevs(response.data.devs);
-        setupWebsocket();
+        setDevs(response.data.devs);//Atualiza o estado dos Devs.
+        setupWebsocket();//Inicia a conexão WebSockets.
     }
 
     function handleRegionChange(region){
-        console.log(region);
-        setCurrentRegion(region);
+        setCurrentRegion(region);//Atualiza o estado das regioes.
     }
 
     if(!currentRegion){
+        //Enquanto o GPS nao retorna os dados entregamos null à pagina.
         return null;
     }
 

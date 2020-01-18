@@ -23,6 +23,8 @@ exports.setupWebsocket = (server) => {
 };
 
 exports.findConnections = (coordinates, techs) => {
+    //Retorna todas as conecções aonde a distancia seja menor que 10km 
+    //e tenha ao menos uma tecnologia do filtro.
     return connections.filter(connections => {
         return calculateDistance(coordinates, connections.coordinates) < 10
                && connections.techs.some(item => techs.includes(item))
@@ -30,6 +32,7 @@ exports.findConnections = (coordinates, techs) => {
 }
 
 exports.sendMessage = (to, message, data) => {
+    //Envia a mensagem a todas as conexções validas.
     to.forEach(connection => {
         io.to(connection.id).emit(message, data);
     });

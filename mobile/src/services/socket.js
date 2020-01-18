@@ -5,6 +5,8 @@ const socket = socketio('http://192.168.1.100:3333', {
 });
 
 function subscribeToNewDevs(subscribeFunction){
+    //Toda vez que o servidor enviar uma mensagem com o titulo: 'new-dev'
+    //a função passada pelos parametros será invocada.
     socket.on('new-dev', subscribeFunction);
 }
 
