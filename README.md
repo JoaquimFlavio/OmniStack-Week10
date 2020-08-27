@@ -9,7 +9,7 @@
 
 ### Interface Web
 
-![Web](/Users/joaquimflavio/Documents/OmniStack-Week10/screenshots/Web.png)
+![Web](screenshots/Web.png)
 
 <img src="screenshots/mobile 1.jpg" alt="mobile 1" style="zoom:25%;" /><img src="screenshots/mobile 2.jpg" alt="mobile 2" style="zoom:25%;" /><img src="/Users/joaquimflavio/Documents/OmniStack-Week10/screenshots/mobile cliked.jpg" alt="mobile cliked" style="zoom:25%;" /><img src="/Users/joaquimflavio/Documents/OmniStack-Week10/screenshots/mobile - profiles.jpg" alt="mobile - profiles" style="zoom:25%;" />
 
@@ -66,7 +66,7 @@ npm start
 npx create-react-app web
 ```
 
-###Native
+### Native
 
 ```bash
 npm install -g expo-cli
